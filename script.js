@@ -1,13 +1,30 @@
-$("h1").css({
-  fontSize: "150px",
-  color: "#f3f3f3",
-  fontFamily: "helvetica"
-});
+// call back hell 
+doSomething(function(result) {
+  doSomethingElse(result, function(newResult) {
+    doThirdThing(newResult, function(finalResult) {
+      console.log('Got the final result: ' + finalResult);
+    }, failureCallback);
+  }, failureCallback);
+}, failureCallback);
 
-$("body").css("background", "#ff4040");
+// then promise heaven 
+doSomething()
+.then(function(result) {
+  return doSomethingElse(result);
+})
+.then(function(newResult) {
+  return doThirdThing(newResult);
+})
+.then(function(finalResult) {
+  console.log('Got the final result: ' + finalResult);
+})
+.catch(failureCallback);
 
-$("li").css({
-  fontSize: "60px",
-  fontFamily: "helvetica",
-  color: "#f3f3f3"
-});
+// arrow function valhalla 
+doSomething()
+.then(result => doSomethingElse(result))
+.then(newResult => doThirdThing(newResult))
+.then(finalResult => {
+  console.log(`Got the final result: ${finalResult}`);
+})
+.catch(failureCallback);
